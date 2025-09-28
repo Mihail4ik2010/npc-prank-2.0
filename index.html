@@ -6,7 +6,6 @@
   <title>Ваш Телефон Взломан</title>
 
   <style>
-    /* минимальный красный «паник»-интерфейс */
     :root{--bg:#7f0000;--dark:#4a0000;--txt:#fff}
     html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
     body{
@@ -38,17 +37,11 @@
       padding:10px 14px;border-radius:10px;font-weight:700;
       box-shadow:0 6px 20px rgba(255,60,60,0.15);
     }
-    .timer{
-      margin-left:auto;
-      font-family:monospace;
-      font-size:34px;
-      font-weight:700;
-      letter-spacing:1px;
-    }
     .details{
       margin-top:18px;
       background:rgba(0,0,0,0.12);
       padding:14px;border-radius:8px;color:rgba(255,255,255,0.95);
+      flex:1;
     }
     .cta{
       margin-top:16px;
@@ -61,10 +54,21 @@
       color:var(--txt);text-decoration:none;font-weight:600;
     }
     .small{font-size:13px;color:rgba(255,255,255,0.75);margin-top:8px}
+
+    /* Таймер по центру снизу */
+    .timer{
+      font-family: monospace;
+      font-size: 50px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-align: center;
+      margin: 20px auto;
+    }
+
     @media (max-width:560px){
       .box{padding:18px}
       h1{font-size:20px}
-      .timer{font-size:26px}
+      .timer{font-size:40px}
     }
   </style>
 
@@ -92,11 +96,10 @@
 
     <div class="warning">
       <div class="badge">@Mihail4ik2010</div>
-      <div class="details" style="flex:1">
+      <div class="details">
         <div style="font-weight:700">ПРЕДУПРЕЖДЕНИЕ</div>
-        <div class="small">На ваш телефон был установлен вирус, чтобы удалить его купите @Mihail4ik2010 3-и шаурмы.Либо вирус будет открывать вам порно в 3 ночи на всю громкость!!!.</div>
+        <div class="small">На ваш телефон был установлен вирус, чтобы удалить его купите @Mihail4ik2010 3-и шаурмы. Либо вирус будет открывать вам порно в 3 ночи на всю громкость!!!</div>
       </div>
-      <div class="timer" id="timer">00:00</div>
     </div>
 
     <div class="cta">
@@ -104,14 +107,17 @@
       <a class="btn" id="more">Показать детали</a>
     </div>
 
-    <div class="small" id="extra">Даже не пытайтесь перезапустьти устройство - не поможет.</div>
+    <div class="small" id="extra">Даже не пытайтесь перезапустить устройство - не поможет.</div>
+
+    <!-- Таймер по центру -->
+    <div class="timer" id="timer">00:00</div>
 
     <!-- Кнопка fullscreen -->
     <button id="goFull" style="margin-top:20px;padding:10px 14px;border-radius:10px;background:#00000022;color:white;border:1px solid rgba(255,255,255,0.08);font-weight:600;">Открыть полноэкран</button>
   </div>
 
   <script>
-    // Таймер
+    // Таймер на 5 минут
     const countdownSeconds = 300;
     let remaining = countdownSeconds;
     const timerEl = document.getElementById('timer');
@@ -146,12 +152,12 @@
       }
     }, 1000);
 
-    // Кнопки косметика
+    // Кнопки
     document.getElementById('dismiss').addEventListener('click', function(){
       try { history.back(); } catch(e){ window.close(); }
     });
     document.getElementById('more').addEventListener('click', function(){
-      alert("Подробности: Если вы не выполните условия до истечения таймера - вирус останится на всегда!!!.");
+      alert("Подробности: Если вы не выполните условия до истечения таймера - вирус останется на всегда!!!.");
     });
 
     // Fullscreen кнопка
