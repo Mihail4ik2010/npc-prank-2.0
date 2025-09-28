@@ -1,9 +1,61 @@
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Security Alert</title>
+
+  <style>
+    /* твои стили (как есть) */
+  </style>
+
+  <!-- НАЧАЛО ДОБАВЛЕНИЯ PWA -->
+  <link rel="manifest" href="/npc-prank/manifest.json">
+  <meta name="theme-color" content="#7f0000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="/npc-prank/icon-192.png">
+
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/npc-prank/sw.js').catch(console.error);
+  }
+  </script>
+  <!-- КОНЕЦ ДОБАВЛЕНИЯ PWA -->
+
+</head>
+То есть:
+
+Оставляем весь твой <style> как есть.
+
+Сразу после него, но перед </head> — вставляем блок с <link rel="manifest">, мета-теги и скрипт регистрации SW.
+
+После этого PWA и fullscreen функционал будут работать, и страница сможет открываться почти в полноэкранном режиме.
+
+Если хочешь, я могу сразу написать готовый твой index.html с вставленным PWA и кнопкой «Полный экран», чтобы осталось только заменить файл в репозитории.
+
+Хочешь, чтобы я сделал это?
+
+
+
+
+
+
+
+Вы сказали:
+дай мне просто полный код чтобы я его скопировал
+
+
+ChatGPT сказал:
+Отлично! Вот готовый полностью рабочий index.html с твоим красным интерфейсом, таймером, PWA и кнопкой «Открыть полноэкран». Просто скопируй и замени им старый файл в репозитории.
+
+html
+Копировать код
 <!doctype html>
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Security Alert</title>
+
   <style>
     /* минимальный красный «паник»-интерфейс */
     :root{--bg:#7f0000;--dark:#4a0000;--txt:#fff}
@@ -67,6 +119,19 @@
       .timer{font-size:26px}
     }
   </style>
+
+  <!-- PWA и fullscreen -->
+  <link rel="manifest" href="/npc-prank/manifest.json">
+  <meta name="theme-color" content="#7f0000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="/npc-prank/icon-192.png">
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/npc-prank/sw.js').catch(console.error);
+    }
+  </script>
 </head>
 <body>
   <div class="box" role="main" aria-live="polite">
@@ -92,31 +157,28 @@
     </div>
 
     <div class="small" id="extra">Если вы не знаете источник активности — перезагрузите устройство и проверьте настройки безопасности.</div>
+
+    <!-- Кнопка fullscreen -->
+    <button id="goFull" style="margin-top:20px;padding:10px 14px;border-radius:10px;background:#00000022;color:white;border:1px solid rgba(255,255,255,0.08);font-weight:600;">Открыть полноэкран</button>
   </div>
 
   <script>
-    // Настройки: сколько секунд отсчёта
-    const countdownSeconds = 45; // <- измените по желанию
-
+    // Таймер
+    const countdownSeconds = 45;
     let remaining = countdownSeconds;
     const timerEl = document.getElementById('timer');
-
     function formatTime(s){
       const mm = Math.floor(s/60).toString().padStart(2,'0');
       const ss = (s%60).toString().padStart(2,'0');
       return mm + ':' + ss;
     }
-
     timerEl.textContent = formatTime(remaining);
-
     const interval = setInterval(()=> {
       remaining--;
       if(remaining < 0){
         clearInterval(interval);
         timerEl.textContent = "00:00";
-        // действие по окончании: мигающий фон и сообщение
         document.body.style.animation = "pulse 0.8s infinite";
-        // краткое всплытие
         const p = document.createElement('div');
         p.style.position='fixed';
         p.style.left='50%';
@@ -136,16 +198,31 @@
       }
     }, 1000);
 
-    // кнопки — чисто косметика
+    // Кнопки косметика
     document.getElementById('dismiss').addEventListener('click', function(){
-      // закрыть страницу — попытка вернуться назад
       try { history.back(); } catch(e){ window.close(); }
     });
     document.getElementById('more').addEventListener('click', function(){
       alert("Подробности: фальшивый лог для шутки. Никаких данных не украдено.");
     });
 
-    // лёгкая анимация фона (CSS-in-JS)
+    // Fullscreen кнопка
+    document.getElementById('goFull').addEventListener('click', async () => {
+      try {
+        if (document.documentElement.requestFullscreen) {
+          await document.documentElement.requestFullscreen();
+        } else if (document.documentElement.webkitRequestFullscreen) {
+          await document.documentElement.webkitRequestFullscreen();
+        } else {
+          alert('Ваш браузер не поддерживает полноэкран через JS.');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Не получилось включить полноэкран: ' + err.message);
+      }
+    });
+
+    // Лёгкая анимация фона
     const style = document.createElement('style');
     style.textContent = `
       @keyframes pulse {
