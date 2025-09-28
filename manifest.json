@@ -1,0 +1,12 @@
+{
+  "name": "Hack Joke",
+  "short_name": "HackJoke",
+  "start_url": "/npc-prank/",
+  "display": "standalone",
+  "background_color": "#7f0000",
+  "theme_color": "#7f0000",
+  "icons": [
+    { "src": "/npc-prank/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/npc-prank/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
